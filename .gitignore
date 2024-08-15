@@ -1,0 +1,45 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS - cache and temporary files
+.Spotlight-V100
+.Trashes
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# Flask
+instance/
+*.log
+
+# Secrets and configuration files
+*.env
+config.py
+*.sqlite3
+
+# IDE settings
+.vscode/
+.idea/
+
+# Build artifacts
+*.egg-info/
+*.egg
+dist/
+build/
+pip-wheel-metadata/
+
+# Docker-specific Python cache
+**/__pycache

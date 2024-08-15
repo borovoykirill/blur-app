@@ -1,0 +1,13 @@
+==========================================================
+Your image-blur application has been deployed!
+
+To test the image blurring service, you can use the following curl command:
+
+  1. Retrieve the external IP of the service:
+     EXTERNAL_IP=$(kubectl get ingress {{ .Release.Name }}-ingress -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+
+  2. Use curl to send a POST request with an image to the service:
+     curl -X POST -F "image=@/path/to/your/image.jpg" http://$EXTERNAL_IP/blur -o blurred-image.jpg
+
+This will save the blurred image as `blurred-image.jpg`.
+==========================================================

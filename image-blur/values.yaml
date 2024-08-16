@@ -1,0 +1,33 @@
+project_id: <your_project_id>
+env: dev
+
+deployment:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  image:
+    repository: "<your_registry_zone>/{{ .Values.project_id }}/<your_registry_name>/{{ .Chart.Name }}"
+    tag: latest
+    pullPolicy: Always
+
+service:
+  name: "{{ .Chart.Name }}-svc"
+  type: ClusterIP
+  port: 80
+
+configMap:
+  name: "{{ .Chart.Name }}-config"
+  enableTool: "true"
+
+ingress:
+  enabled: false
+  name: "{{ .Chart.Name }}-ingress"
+  dns_record: "{{ .Values.env }}.blur-app.example.com"
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "true"

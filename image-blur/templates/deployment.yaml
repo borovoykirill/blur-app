@@ -2,12 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Chart.Name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Chart.Name }}
-    chart: {{ .Chart.Name }}
-    release: "{{ .Release.Name }}"
-    heritage: "{{ .Release.Service }}"
+    {{- include "common.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.deployment.replicas }}
   selector:
@@ -22,15 +19,24 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.deployment.image.repository }}:{{ .Values.deployment.image.tag }}"
+          image: "{{ tpl .Values.deployment.image.repository . }}:{{ .Values.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
           ports:
             - containerPort: 8080
           env:
             - name: ENABLE_TOOL
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Values.configMap.name }}
+                  name: {{ tpl .Values.configMap.name . }}
                   key: enableTool
+          securityContext:
+            runAsUser: 1001
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           resources:
             requests:
               cpu: {{ .Values.deployment.resources.requests.cpu }}
@@ -42,11 +48,11 @@ spec:
             httpGet:
               path: /liveness
               port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 30
+            initialDelaySeconds: 30
+            periodSeconds: 60
           readinessProbe:
             httpGet:
               path: /readiness
               port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 15
+            initialDelaySeconds: 30
+            periodSeconds: 60

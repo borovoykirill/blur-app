@@ -1,5 +1,9 @@
 apiVersion: v2
+appVersion: "1.0"
 name: image-blur
 description: A Helm chart for deploying the Python blur application
+maintainers:
+  - name: Kirill Borovoy
+sources:
+  - https://github.com/borovoykirill/blur-app
 version: 1.0.0
-appVersion: "1.0"

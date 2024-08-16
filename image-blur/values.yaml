@@ -1,3 +1,6 @@
+project_id: <your_project_id>
+env: dev
+
 deployment:
   replicas: 1
   resources:
@@ -8,27 +11,23 @@ deployment:
       cpu: 200m
       memory: 256Mi
   image:
-    repository: us-central1-docker.pkg.dev/<PROJECT-ID>/<ARTIFACTORY-NAME>/<IMAGE-NAME>
+    repository: "<your_registry_zone>/{{ .Values.project_id }}/<your_registry_name>/{{ .Chart.Name }}"
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
 service:
-  name: image-blur-svc
+  name: "{{ .Chart.Name }}-svc"
   type: ClusterIP
-  port: 8080
+  port: 80
+
+configMap:
+  name: "{{ .Chart.Name }}-config"
+  enableTool: "true"
 
 ingress:
   enabled: false
-  name: image-blur-ingress
-  className: ""
-  annotations: {}
-  hosts:
-    - host: blur-app.example.com
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
-
-configMap:
-  name: image-blur-config
-  enableTool: "true"
+  name: "{{ .Chart.Name }}-ingress"
+  dns_record: "{{ .Values.env }}.blur-app.example.com"
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "true"

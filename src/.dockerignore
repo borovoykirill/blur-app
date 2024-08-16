@@ -1,0 +1,36 @@
+# Git
+README.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# Flask instance folder
+instance/
+
+# Configuration and environment files
+*.env
+config.py
+*.sqlite3
+
+# IDE settings
+.vscode/
+.idea/
+
+# Build artifacts
+*.egg-info/
+*.egg
+dist/
+build/
+pip-wheel-metadata/
+
+# Image
+*.jpeg

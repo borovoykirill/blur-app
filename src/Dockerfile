@@ -19,7 +19,7 @@ ENV PYTHONPATH=/usr/lib/python3.12/site-packages
 # Env config and security context
 ENV ENABLE_TOOL=true
 
-RUN useradd -ms /bin/sh non-root
+RUN useradd -u 1001 -m non-root
 WORKDIR /app
 COPY app.py .
 RUN chown -R non-root:non-root /app
